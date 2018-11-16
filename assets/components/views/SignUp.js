@@ -94,8 +94,8 @@ handleSubmit = () => {
 	collection.uname = this.state.userName,
 	collection.fpwd = this.state.fPassword,
 	collection.cpwd = this.state.cPassword,
-	console.log(collection);
-	fireConection.database().ref('users_master/001').set(
+
+		fireConection.database().ref('users/003').set(
 		{
 		  collection
 		}).then(() => {
@@ -104,6 +104,7 @@ handleSubmit = () => {
 		}).catch((error) => {
 			console.log("Insert execption : "+error);
 		});
+
 }
 
 handleCancel = () => {
@@ -308,13 +309,3 @@ const styles = StyleSheet.create({
 // 	onBlur={this.handleBlur}
 // 	onFocus={this.handleFocus}
 // />
-
-// fireConection.database().ref('users/003').set(
-		// {
-		//   collection
-		// }).then(() => {
-		// 	console.log("Record Created");
-		// 	this.props.navigation.navigate('HomeButtonNav');
-		// }).catch((error) => {
-		// 	console.log("Insert execption : "+error);
-		// });

@@ -10,9 +10,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 // import LandingPage from './assets/components/views/LoginView';
 import LandingPage from './assets/components/views/LoginOrSignUp';
-
-import SignUpViewNew from './assets/components/views/SignUpViewNew';
-import LoginViewNew from './assets/components/views/LoginViewNew';
 import DashBoard from './assets/components/views/DashBoard';
 import SignUpPage from './assets/components/views/SignUp';
 import AddProject from './assets/components/views/AddProject';
@@ -25,14 +22,13 @@ import ProfitPieChart from './assets/components/views/ProfitChart';
 
 export const SignUpStack = createStackNavigator({
 	SignUpView :{
-		// screen : SignUpPage,
-		screen : SignUpViewNew,
+		screen : SignUpPage,
 		navigationOptions:( { navigation } )=> ({
-	   		title : 'Create Account',
-	   		headerStyle: { backgroundColor: '#FFFF',height : 74,}, // Tab Header
+	   		title : 'Create Account -0',
+	   		headerStyle: { backgroundColor: '#2980b9',height : 74,}, // Tab Header
 			headerTintColor: '#fff',
 			headerTitleStyle:{
-				fontSize:20,fontFamily:'Roboto',color:'4d4d4d',fontWeight:'100',letterSpacing:1.8,alignItems:'center',
+				fontSize:20,fontFamily:'Roboto',color:'#fff',fontWeight:'100',letterSpacing:1.8,alignItems:'center',
 			},
 	   }),
 	}
@@ -193,18 +189,10 @@ export const RootStackNavigator = (userSession =false) =>{
 				header :null
 			}
 		},
-		SignUp:{
-			// swap blocked screen values to see the difference in header
-			// screen:SignUpStack,
-			screen:SignUpViewNew,
+		SignUpView:{
+			screen:SignUpStack,
 			navigationOptions:{
 				header:null
-			}
-		},
-		Login:{
-			screen:LoginViewNew,
-			navigationOptions:{
-				header:null,
 			}
 		},
 		RevenueChartItem:{
