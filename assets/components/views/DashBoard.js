@@ -8,7 +8,35 @@ import {
 		TouchableOpacity
 	} from 'react-native';
 
+import fireConection from '../connection/fire';
+
 export default class DashBoard extends Component{
+
+    constructor(props){
+      super(props);
+      this.state = {
+        userStatus:'',
+        clientsInfo : [],
+        loading:false,
+        loadingPost:true
+      }
+    }
+
+    componentWillMount(){
+      var userData = [];
+        
+      fireConection.database().ref('userMaster').on('value',(snapshot) => {
+          snapshot.forEach(function(child){
+            const user = child.val();
+            
+            // userData.push({
+            //   user.userDetail.email
+            // });
+            console.log(user.userDetail.email);
+          });
+          
+      });
+    }
 
 
 	  revenueOnPress = () =>{
@@ -20,43 +48,44 @@ export default class DashBoard extends Component{
   	}
 
 	render(){
-		return(
-			<ScrollView style = {styles.ScrollContainer}>
-				<View style={styles.bar}>
-					<View style={[styles.ItemLeft,styles.Separator]}>
-		                <Text style={styles.Description}>Expences</Text>
-		                <Text style={styles.Content}>10,28,456</Text>
-		                <View style={styles.TranscationIcon}>
-                    		
-                		</View>
-           			 </View>
-				
-					<View style={styles.ItemRight}>
-		                <Text style={styles.Description}>PendingBills</Text>
-		                <Text style={styles.Content}>1,24,123</Text>
-	                	<View style={styles.TranscationIcon}>
-	                    
-	                	</View>
-	            	</View>
-            	</View>
+		
+    return(
+
+    	<ScrollView style = {styles.ScrollContainer}>
+				 <View style={styles.bar}>
+
+  					<View style={[styles.ItemLeft,styles.Separator]}>
+  		          <Text style={styles.Description}>Expences</Text>
+  		          <Text style={styles.Content}>10,28,456</Text>
+  		            <View style={styles.TranscationIcon}>
+                     		
+                  </View>
+            </View>
+  				
+  					<View style={styles.ItemRight}>
+  		          <Text style={styles.Description}>PendingBills</Text>
+  		          <Text style={styles.Content}>1,24,123</Text>
+  	           	<View style={styles.TranscationIcon}>
+  	                    
+  	           	</View>
+  	         </View>
+          </View>
             	
-            	<ScrollView style = {styles.ScrollContainer}>
-            		<View style={styles.Status}>
-            			<View>
-							<Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-			          		<Text style={styles.StatusInfo}>Paid</Text>
-			         	</View>
-			         	<View style={styles.StatusInfoSeparator}>
-							<Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-			          		<Text style={styles.StatusInfo}>Paid</Text>
-			         	</View>
-			         	<View style={styles.StatusInfoSeparator}>
-							<Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-			          		<Text style={styles.StatusInfo}>Paid</Text>
-			         	</View>
-			      	</View>
-			    </ScrollView>
-       
+      		<View style={styles.Status}>
+        			<View>
+        			   	<Text style={styles.StatusDescription}>5000 Labour Bill</Text>
+                  <Text style={styles.StatusInfo}>paid</Text>
+           	  </View>
+           	  <View style={styles.StatusInfoSeparator}>
+  				        <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
+            		  <Text style={styles.StatusInfo}>Paid</Text>
+           	  </View>
+           	  <View style={styles.StatusInfoSeparator}>
+  				        <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
+            		  <Text style={styles.StatusInfo}>Paid</Text>
+           	  </View>
+      	   </View>
+    
         		<View style={styles.revenueSection}>
 		            <TouchableOpacity onPress={this.revenueOnPress} style={styles.revenueItems}>
 		              <View style={styles.revenueItemsLeft}>

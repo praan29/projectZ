@@ -55,7 +55,7 @@ render(){
 						fontWeight='300'
 						fontFamily= 'Roboto'
 						buttonStyle={[styles.loginButton]}
-						onPress={() =>  Alert.alert('Sign Button Clicked')} 	
+						onPress={() => this.props.navigation.navigate('DashBoardView')} 	
 					/>
 					
 					<Button

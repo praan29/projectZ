@@ -11,7 +11,7 @@ import {
 
 import fireConection from '../connection/fire';
 
-import { Button,Icon } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import RadioGroup from 'react-native-radio-buttons-group';
 import { HeaderBackButton,Badge,NavigationActions } from 'react-navigation';
 
@@ -192,6 +192,7 @@ cPasswordChangeEvent=(cpwd)=>this.setState({cPassword:cpwd});
 						buttonStyle={styles.cancelButton}
 						onPress={this.handleCancel}
 					/>
+
 				</View>
 			</View>
 		);

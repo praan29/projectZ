@@ -6,6 +6,7 @@ import {
 		TextInput,
 		StyleSheet,
 		ScrollView,
+		SafeAreaView,
 		TouchableOpacity,
 		KeyboardAvoidingView,
 }from 'react-native';
@@ -14,7 +15,6 @@ import fireConection from '../connection/fire';
 import { Button } from 'react-native-elements';
 
 export default class SignUpViewNew extends React.Component{
-
 
 constructor(props){
 	super(props);
@@ -26,49 +26,70 @@ constructor(props){
 		userName:"",
 		fPassword:"",
 		cPassword:"",
-		clientId:1,
+		accStatus:"",
+		fireBaseClientId:"",
 	};
 }	
 
 // radio buttons
-radio_props = {
-	data:[
-		{
-			label : 'Male',
-			value : 'm',
-			layout : 'row',
-		},
-		{
-			label : 'Female',
-			value : 'f',
-			layout : 'row',
-		},
-   ],
-};
+	// radio_props = {
+	// 	data:[
+	// 		{
+	// 			label : 'Male',
+	// 			value : 'm',
+	// 			layout : 'row',
+	// 		},
+	// 		{
+	// 			label : 'Female',
+	// 			value : 'f',
+	// 			layout : 'row',
+	// 		},
+	//    ],
+	// };
 
 onPress = data => this.setState({ data });
+      
+componentWillMount(){
+		var user_id = "";
+		fireConection.database().ref('userMaster').on('value',(data) => {
+			this.state.fireBaseClientId = data.numChildren();
+			user_id = this.state.fireBaseClientId;
+		
+			if(user_id > 0){
+				user_id = user_id + 1;
+					if(user_id <= 9){
+						user_id = "0" + user_id;
+					}
+			}else if(user_id <= 0){
+					user_id = "01";
+			}
+			this.state.fireBaseClientId = user_id;
+		});
+}
 
 // form submit
 handleSubmitEvent = () =>{
-	let collection = {}
-	if(this.state.firstName && this.state.lastName 
+	let userDetail = {}
+	if(this.state.firstName && this.state.lastName
 		&& this.state.emailAddress && this.state.mobileNumber 
 		&& this.state.userName && this.state.fPassword && this.state.cPassword){
-		collection.fname1 = this.state.firstName,
-		collection.lname = this.state.lastName,
-		collection.email = this.state.emailAddress,
-		collection.phone = this.state.mobileNumber,
-		collection.uname = this.state.userName,
-		collection.fpwd = this.state.fPassword,
-		collection.cpwd = this.state.cPassword,
-		fireConection.database().ref('users/006').set(
+			userDetail.accStatus = 0,
+			userDetail.userId = this.state.fireBaseClientId,
+			userDetail.fname = this.state.firstName,
+			userDetail.lname = this.state.lastName,
+			userDetail.email = this.state.emailAddress,
+			userDetail.phone = this.state.mobileNumber,
+			userDetail.uname = this.state.userName,
+			userDetail.fpwd = this.state.fPassword,
+			userDetail.cpwd = this.state.cPassword,
+		fireConection.database().ref('userMaster/').push(
 		{
-		  collection
+		  userDetail
 		}).then(() => {
 			console.log("Record Created");
 			this.props.navigation.navigate('HomeButtonNav');
 		}).catch((error) => {
-			console.log("Insert execption : "+error);
+			console.log("Insert exception : "+error);
 		});
 	}else{
 		Alert.alert('Check ');
@@ -84,6 +105,7 @@ userNameChangeEvent=(uname)=>this.setState({userName:uname});
 fPasswordChangeEvent=(fpwd)=>this.setState({fPassword:fpwd});
 cPasswordChangeEvent=(cpwd)=>this.setState({cPassword:cpwd});
 
+
 render(){
 	return(
 		<View style = {styles.container}>
@@ -93,86 +115,88 @@ render(){
 				<Text style={[styles.header]}>Create Account</Text>
 			</View>
 
-			<ScrollView style={styles.scrollBar}>
+			<SafeAreaView style={{flex:1}}>
+				<ScrollView style={styles.scrollBar}>
 
-				<KeyboardAvoidingView behavior="padding">
-					
-					<View style={[styles.inputs,styles.inputsWrapper]}>
+					<KeyboardAvoidingView behavior="padding">
 						
-						<TextInput
-							returnKeyType = "next"
-							placeholder = "Firstname"
-							style = {styles.textBox}
-							value={this.state.firstName}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.firstNameChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+						<View style={[styles.inputs,styles.inputsWrapper]}>
+							
+							<TextInput
+								returnKeyType = "next"
+								placeholder = "Firstname"
+								style = {styles.textBox}
+								value={this.state.firstName}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.firstNameChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							returnKeyType = "next"
-							placeholder = "Lastname"
-							style = {styles.textBox}
-							value={this.state.lastName}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.lastNameChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+							<TextInput
+								returnKeyType = "next"
+								placeholder = "Lastname"
+								style = {styles.textBox}
+								value={this.state.lastName}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.lastNameChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							returnKeyType = "next"
-							placeholder = "Email Address"
-							style = {styles.textBox}
-							value={this.state.emailAddress}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.emailAddressChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+							<TextInput
+								returnKeyType = "next"
+								placeholder = "Email Address"
+								style = {styles.textBox}
+								value={this.state.emailAddress}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.emailAddressChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							returnKeyType = "next"
-							placeholder = "MobileNumber"
-							style = {styles.textBox}
-							value={this.state.mobileNumber}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.mobileNumberChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+							<TextInput
+								returnKeyType = "next"
+								placeholder = "MobileNumber"
+								style = {styles.textBox}
+								value={this.state.mobileNumber}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.mobileNumberChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							returnKeyType = "next"
-							placeholder = "Username"
-							style = {styles.textBox}
-							value={this.state.userName}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.userNameChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+							<TextInput
+								returnKeyType = "next"
+								placeholder = "Username"
+								style = {styles.textBox}
+								value={this.state.userName}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.userNameChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							secureTextEntry
-							returnKeyType = "go"
-							placeholder = "Password"
-							value={this.state.fPassword}
-							style = {styles.textBox}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.fPasswordChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
+							<TextInput
+								secureTextEntry
+								returnKeyType = "go"
+								placeholder = "Password"
+								value={this.state.fPassword}
+								style = {styles.textBox}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.fPasswordChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
 
-						<TextInput
-							secureTextEntry
-							returnKeyType = "go"
-							placeholder = "Confirm Password"
-							style = {styles.textBox}
-							value={this.state.cPassword}
-							placholderTextColor = "95a5a6"
-							onChangeText={this.cPasswordChangeEvent}
-							underlineColorAndroid = "transparent"
-						/>
-					</View>
-				</KeyboardAvoidingView>
-			</ScrollView>
+							<TextInput
+								secureTextEntry
+								returnKeyType = "go"
+								placeholder = "Confirm Password"
+								style = {styles.textBox}
+								value={this.state.cPassword}
+								placholderTextColor = "95a5a6"
+								onChangeText={this.cPasswordChangeEvent}
+								underlineColorAndroid = "transparent"
+							/>
+						</View>
+					</KeyboardAvoidingView>
+				</ScrollView>
+			</SafeAreaView>
 
 			<View style={styles.actionButtons}>
 				<Button
@@ -182,7 +206,7 @@ render(){
 					fontFamily='Roboto'
 					buttonStyle={styles.submitButton}
 					onPress={this.handleSubmitEvent}
-				/>
+				/>	
 				<Button
 					title='X'
 					color='#fff'
@@ -191,6 +215,7 @@ render(){
 					buttonStyle={styles.cancelButton}
 					onPress={this.handleCancelEvent}
 				/>
+				
 			</View>
 		</View>
 	);
@@ -248,7 +273,7 @@ const styles = StyleSheet.create({
   	submitButton:{
   		zIndex : 11,
 		right : 4,
-		bottom : 128,
+		bottom : 100,
 		width : 60,
 		height : 60,
 		elevation : 8,
@@ -261,7 +286,7 @@ const styles = StyleSheet.create({
   	cancelButton:{
   		zIndex : 11,
 		right : 4,
-		bottom : 45,
+		bottom : 20,
 		width : 60,
 		height : 60,
 		elevation : 8,
