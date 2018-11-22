@@ -16,25 +16,27 @@ export default class DashBoard extends Component{
       super(props);
       this.state = {
         userStatus:'',
-        clientsInfo : [],
-        loading:false,
-        loadingPost:true
+        userData : []
       }
     }
 
     componentWillMount(){
-      var userData = [];
-        
       fireConection.database().ref('userMaster').on('value',(snapshot) => {
+
+        let tempUsers = []
           snapshot.forEach(function(child){
             const user = child.val();
-            
-            // userData.push({
-            //   user.userDetail.email
-            // });
-            console.log(user.userDetail.email);
+              let userInfo = {
+                uid          : user.userDetail.userId,
+                isActive     : user.userDetail.accStatus,
+                loggedName   : user.userDetail.uname,
+                emailAddress : user.userDetail.email,
+                fullName     : user.userDetail.fname+""+user.userDetail.lname
+              }
+              tempUsers.push(userInfo);
           });
-          
+          this.setState({userData:tempUsers});
+          console.log(this.state.userData);
       });
     }
 
