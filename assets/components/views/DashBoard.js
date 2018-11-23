@@ -16,7 +16,7 @@ export default class DashBoard extends Component{
       super(props);
       this.state = {
         userStatus:'',
-        userData : []
+        users : []
       }
     }
 
@@ -25,18 +25,19 @@ export default class DashBoard extends Component{
 
         let tempUsers = []
           snapshot.forEach(function(child){
-            const user = child.val();
+            const fireBaseData = child.val();
               let userInfo = {
-                uid          : user.userDetail.userId,
-                isActive     : user.userDetail.accStatus,
-                loggedName   : user.userDetail.uname,
-                emailAddress : user.userDetail.email,
-                fullName     : user.userDetail.fname+""+user.userDetail.lname
+                uid          : fireBaseData.userDetail.userId,
+                isActive     : fireBaseData.userDetail.accStatus,
+                loggedName   : fireBaseData.userDetail.uname,
+                emailAddress : fireBaseData.userDetail.email,
+                fullName     : fireBaseData.userDetail.fname+""+fireBaseData.userDetail.lname
               }
               tempUsers.push(userInfo);
           });
-          this.setState({userData:tempUsers});
-          console.log(this.state.userData);
+          this.setState({users:tempUsers});
+           console.log(this.state.users);
+          console.log(this.state.users[0].loggedName);
       });
     }
 
@@ -74,24 +75,22 @@ export default class DashBoard extends Component{
           </View>
             	
       		<View style={styles.Status}>
-        			<View>
-        			   	<Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-                  <Text style={styles.StatusInfo}>paid</Text>
-           	  </View>
-           	  <View style={styles.StatusInfoSeparator}>
-  				        <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-            		  <Text style={styles.StatusInfo}>Paid</Text>
-           	  </View>
-           	  <View style={styles.StatusInfoSeparator}>
-  				        <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
-            		  <Text style={styles.StatusInfo}>Paid</Text>
-           	  </View>
+        	    {
+                  this.state.users.map((userData)=>{
+                    return (
+                       <View style={styles.StatusInfoSeparator}>
+                          <Text style={styles.StatusDescription} id={userData.uid}>{userData.emailAddress}</Text>
+                          <Text style={styles.StatusInfo} id={userData.uid}>{userData.uid}</Text>
+                       </View>
+                    );
+                  })
+              }
       	   </View>
     
         		<View style={styles.revenueSection}>
 		            <TouchableOpacity onPress={this.revenueOnPress} style={styles.revenueItems}>
 		              <View style={styles.revenueItemsLeft}>
-		                  <Text style={styles.barValueDescription}>Revenue</Text>
+		                  <Text style={styles.barValueDescription}>Revenue - 0 </Text>
 		                  <Text style={styles.Content}>10,28,456</Text>
 		                  <View style={styles.transIcons}>
 		                   
@@ -248,3 +247,22 @@ barValueDescription:{
    letterSpacing: 1.4,
 },
 });
+
+
+// if(this.state.users.length >= 1){
+//   for(var ulop = 0;ulop <= this.state.users.length;ulop++){
+//     <View>
+//         <Text style={styles.StatusDescription}>{this.state.users[ulop].loggedName}</Text>
+//         <Text style={styles.StatusInfo}>{this.state.users[ulop].uid}</Text>
+//     </View>
+//   }
+// }
+              
+// <View style={styles.StatusInfoSeparator}>
+//     <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
+//     <Text style={styles.StatusInfo}>Paid</Text>
+// </View>
+// <View style={styles.StatusInfoSeparator}>
+//     <Text style={styles.StatusDescription}>5000 Labour Bill</Text>
+//     <Text style={styles.StatusInfo}>Paid</Text>
+// </View>
