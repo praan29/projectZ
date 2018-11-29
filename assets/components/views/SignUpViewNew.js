@@ -89,7 +89,7 @@ handleSubmitEvent = () =>{
 			console.log("Record Created");
 			this.props.navigation.navigate('HomeButtonNav');
 		}).catch((error) => {
-			console.log("Insert exception : "+error);
+			// console.log("Insert exception : "+error);
 		});
 	}else{
 		Alert.alert('Check ');
