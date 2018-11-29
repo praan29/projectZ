@@ -10,6 +10,7 @@ import {
 	} from 'react-native';
 
 import fireConection from '../connection/fire';
+import Toast from 'react-native-simple-toast';
 
 export default class DashBoard extends Component{
 
@@ -53,6 +54,7 @@ export default class DashBoard extends Component{
 
     handleToogleSwitch = () => {
       console.log("123");
+      Toast.show('This is a toast');
         // fireConection.database().ref('userMaster').update({
 
         // }.then(()=>{
